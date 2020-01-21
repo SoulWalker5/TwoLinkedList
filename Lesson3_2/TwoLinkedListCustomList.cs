@@ -9,43 +9,26 @@ namespace Lesson3_2
 {
     public class TwoLinkedListCustomList<T> : CustomList<T> where T : class
     {
-        public new TwoLinkedNode<T> Head { get; set; }
-        public new TwoLinkedNode<T> Tail { get; set; }
-        public new T this[int index]
-        {
-            get
-            {
-                Node<T> current = Head;
-                int i = 0;
-
-                while (current != null && i != index)
-                {
-                    current = current.NextElement;
-                    i++;
-                }
-                return current.Element;
-            }
-        }
-        public override void Add(T value)
+        public new void Add(T value)
         {
             TwoLinkedNode<T> node = new TwoLinkedNode<T>(value, null, null);
+
             if (Head == null)
             {
-                Head = node;
-                Tail = node;
+                base.Add(value);
             }
             else if (Head.NextElement == null)
             {
                 Tail.PreviousElement = null;
                 Tail.NextElement = node;
-                Tail = node;
+                Tail = (TwoLinkedNode<T>)node;
                 Tail.PreviousElement = Head;
             }
             else
             {
                 Tail.NextElement = node;
                 Head.PreviousElement = Tail;
-                Tail = node;
+                Tail = (TwoLinkedNode<T>)node;
                 Tail.PreviousElement = Head.PreviousElement;
                 Head.PreviousElement = null;
             }
