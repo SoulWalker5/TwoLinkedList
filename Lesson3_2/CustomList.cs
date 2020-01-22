@@ -5,8 +5,8 @@ namespace Lesson3_2
 {
     public class CustomList<T> : IEnumerable, ICustomList<T>
     {
-        public TwoLinkedNode<T> Head { get; set; }
-        public TwoLinkedNode<T> Tail { get; set; }
+        public Node<T> Head { get; set; }
+        public Node<T> Tail { get; set; }
         public T this[int index]
         {
             get
@@ -23,25 +23,30 @@ namespace Lesson3_2
             }
         }
 
-        public void Add(T value)
+        public virtual void Add(T value)
         {
-            TwoLinkedNode<T> node = new TwoLinkedNode<T>(value, null, null);
+            Node<T> node;
+            SomeMethod(value, out node);
             if (Head == null)
             {
-                Head = (TwoLinkedNode<T>)node;
-                Tail = (TwoLinkedNode<T>)node;
+                Head = node;
+                Tail = node;
             }
             else
             {
                 Tail.NextElement = node;
-                Tail = (TwoLinkedNode<T>)node;
+                Tail = node;
             }
+        }
+        protected virtual void SomeMethod(T value, out Node<T> node)
+        {
+            node = new Node<T>(value, null);
         }
 
         public virtual void Delete(T value)
         {
-            TwoLinkedNode<T> previous = null;
-            TwoLinkedNode<T> current = Head;
+            Node<T> previous = null;
+            Node<T> current = Head;
 
             while (current != null)
             {
@@ -53,13 +58,13 @@ namespace Lesson3_2
                         {
                             if (current.NextElement == null)
                             {
-                                Tail = (TwoLinkedNode<T>)previous;
+                                Tail = previous;
                             }
                         }
                     }
                     else
                     {
-                        Head = (TwoLinkedNode<T>)Head.NextElement;
+                        Head = Head.NextElement;
                         if (Head == null)
                         {
                             Tail = null;
@@ -67,7 +72,7 @@ namespace Lesson3_2
                     }
                 }
                 previous = current;
-                current = (TwoLinkedNode<T>)current.NextElement;
+                current = current.NextElement;
             }
         }
         public IEnumerator GetEnumerator()

@@ -11,65 +11,45 @@ namespace Lesson3_2
     {
         public new void Add(T value)
         {
-            TwoLinkedNode<T> node = new TwoLinkedNode<T>(value, null, null);
-
+            Node<T> node;
+            SomeMethod(value , out node);
             if (Head == null)
-            {
                 base.Add(value);
-            }
-            else if (Head.NextElement == null)
+            else if (Head == Tail)
             {
-                Tail.PreviousElement = null;
+                ((TwoLinkedNode<T>)Tail).PreviousElement = null;
                 Tail.NextElement = node;
                 Tail = (TwoLinkedNode<T>)node;
-                Tail.PreviousElement = Head;
+                ((TwoLinkedNode<T>)Tail).PreviousElement = (TwoLinkedNode<T>)Head;
             }
             else
             {
                 Tail.NextElement = node;
-                Head.PreviousElement = Tail;
+                ((TwoLinkedNode<T>)Head).PreviousElement = (TwoLinkedNode<T>)Tail;
                 Tail = (TwoLinkedNode<T>)node;
-                Tail.PreviousElement = Head.PreviousElement;
-                Head.PreviousElement = null;
+                ((TwoLinkedNode<T>)Tail).PreviousElement = ((TwoLinkedNode<T>)Head).PreviousElement;
+                ((TwoLinkedNode<T>)Head).PreviousElement = null;
             }
         }
+        protected override void SomeMethod(T value, out Node<T> node)
+        {
+            node = new TwoLinkedNode<T>(value, null, null);
+        }
+
         public override void Delete(T value)
         {
-            TwoLinkedNode<T> previousfirst = null;
-            TwoLinkedNode<T> first = Head;
-            TwoLinkedNode<T> last = Tail;
-            TwoLinkedNode<T> previouslast = null;
-
-            while (first != null || last != null)
+            Node<T> last = Tail;
+            Node<T> previouslast = null;
+            base.Delete(value);
+            while (last != null)
             {
-                if (first.Element.Equals(value))
-                {
-                    if (previousfirst != null)
-                    {
-                        previousfirst.NextElement = first.NextElement;
-                        {
-                            if (first.NextElement == null)
-                            {
-                                Tail = previousfirst;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Head = (TwoLinkedNode<T>)Head.NextElement;
-                        if (Head == null)
-                        {
-                            Tail = null;
-                        }
-                    }
-                }
                 if (last.Element.Equals(value))
                 {
                     if (previouslast != null)
                     {
-                        previouslast.PreviousElement = last.PreviousElement;
+                        ((TwoLinkedNode<T>)previouslast).PreviousElement = ((TwoLinkedNode<T>)last).PreviousElement;
                         {
-                            if (last.PreviousElement == null)
+                            if (((TwoLinkedNode<T>)last).PreviousElement == null)
                             {
                                 Tail = previouslast;
                             }
@@ -77,7 +57,7 @@ namespace Lesson3_2
                     }
                     else
                     {
-                        Tail = (TwoLinkedNode<T>)Tail.PreviousElement;
+                        Tail = ((TwoLinkedNode<T>)Tail).PreviousElement;
                         if (Tail == null)
                         {
                             Head = null;
@@ -85,14 +65,12 @@ namespace Lesson3_2
                     }
                 }
                 previouslast = last;
-                last = (TwoLinkedNode<T>)last.PreviousElement;
-                previousfirst = first;
-                first = (TwoLinkedNode<T>)first.NextElement;
+                last = ((TwoLinkedNode<T>)last).PreviousElement;
             }
         }
         public new IEnumerator<T> GetEnumerator()
         {
-            return new TwoLinkedListCustomListIEnumerator<T>(Head);
+            return new TwoLinkedListCustomListIEnumerator<T>((TwoLinkedNode<T>)Head);
         }
     }
 }
