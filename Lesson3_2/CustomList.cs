@@ -22,11 +22,10 @@ namespace Lesson3_2
                 return current.Element;
             }
         }
-
         public virtual void Add(T value)
         {
-            Node<T> node;
-            SomeMethod(value, out node);
+            Node<T> node = AssignmentNode(value);
+            //AssignmentNode(value);
             if (Head == null)
             {
                 Head = node;
@@ -38,11 +37,10 @@ namespace Lesson3_2
                 Tail = node;
             }
         }
-        protected virtual void SomeMethod(T value, out Node<T> node)
+        protected virtual Node<T> AssignmentNode(T value)
         {
-            node = new Node<T>(value, null);
+            return new Node<T>(value, null);
         }
-
         public virtual void Delete(T value)
         {
             Node<T> previous = null;

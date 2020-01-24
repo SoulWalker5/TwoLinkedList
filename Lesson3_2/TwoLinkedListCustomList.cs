@@ -9,10 +9,9 @@ namespace Lesson3_2
 {
     public class TwoLinkedListCustomList<T> : CustomList<T> where T : class
     {
-        public new void Add(T value)
+        public override void Add(T value)
         {
-            Node<T> node;
-            SomeMethod(value , out node);
+            Node<T> node = AssignmentNode(value);
             if (Head == null)
                 base.Add(value);
             else if (Head == Tail)
@@ -31,11 +30,10 @@ namespace Lesson3_2
                 ((TwoLinkedNode<T>)Head).PreviousElement = null;
             }
         }
-        protected override void SomeMethod(T value, out Node<T> node)
+        protected override Node<T> AssignmentNode(T value)
         {
-            node = new TwoLinkedNode<T>(value, null, null);
+            return new TwoLinkedNode<T>(value, null, null);
         }
-
         public override void Delete(T value)
         {
             Node<T> last = Tail;
