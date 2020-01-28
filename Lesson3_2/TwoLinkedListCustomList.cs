@@ -12,9 +12,10 @@ namespace Lesson3_2
         public override void Add(T value)
         {
             Node<T> node = AssignmentNode(value);
+
             if (Head == null)
                 base.Add(value);
-            else if (Head == Tail)
+            else if (Head.NextElement == null)
             {
                 ((TwoLinkedNode<T>)Tail).PreviousElement = null;
                 Tail.NextElement = node;
@@ -36,22 +37,50 @@ namespace Lesson3_2
         }
         public override void Delete(T value)
         {
-            Node<T> last = Tail;
-            Node<T> previouslast = null;
-            base.Delete(value);
-            while (last != null)
+            TwoLinkedNode<T> previousfirst = null;
+            TwoLinkedNode<T> first = (TwoLinkedNode<T>)Head;
+            TwoLinkedNode<T> last = (TwoLinkedNode<T>)Tail;
+            TwoLinkedNode<T> previouslast = null;
+            while (first != null || last != null)
             {
+                if (first.Element.Equals(value))
+                {
+                    if (previousfirst != null)
+                    {
+                        previousfirst.NextElement = first.NextElement;
+                        last = first;
+                        last.PreviousElement = (TwoLinkedNode<T>)last.NextElement;
+                        {
+                            if (first.NextElement == null)
+                            {
+                                Tail = first;
+                            }
+                        }
+                        return;
+                    }
+                    else
+                    {
+                        Head = (TwoLinkedNode<T>)Head.NextElement;
+                        if (Head == null)
+                        {
+                            Tail = null;
+                        }
+                    }
+                }
                 if (last.Element.Equals(value))
                 {
                     if (previouslast != null)
                     {
-                        ((TwoLinkedNode<T>)previouslast).PreviousElement = ((TwoLinkedNode<T>)last).PreviousElement;
+                        previouslast.PreviousElement = last.PreviousElement;
+                        first = last;
+                        first.PreviousElement = (TwoLinkedNode<T>)first.NextElement;
                         {
-                            if (((TwoLinkedNode<T>)last).PreviousElement == null)
+                            if (last.PreviousElement == null)
                             {
                                 Tail = previouslast;
                             }
                         }
+                        return;
                     }
                     else
                     {
@@ -63,7 +92,9 @@ namespace Lesson3_2
                     }
                 }
                 previouslast = last;
-                last = ((TwoLinkedNode<T>)last).PreviousElement;
+                last = last.PreviousElement;
+                previousfirst = first;
+                first = (TwoLinkedNode<T>)first.NextElement;
             }
         }
         public new IEnumerator<T> GetEnumerator()

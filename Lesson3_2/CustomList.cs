@@ -25,7 +25,6 @@ namespace Lesson3_2
         public virtual void Add(T value)
         {
             Node<T> node = AssignmentNode(value);
-            //AssignmentNode(value);
             if (Head == null)
             {
                 Head = node;
@@ -56,7 +55,7 @@ namespace Lesson3_2
                         {
                             if (current.NextElement == null)
                             {
-                                Tail = previous;
+                                Tail = current;
                             }
                         }
                     }

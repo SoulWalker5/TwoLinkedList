@@ -26,6 +26,7 @@ namespace Lesson3_2
             foreach (var notebook in nc)
                 Console.WriteLine("{0} {1}", notebook.Name, notebook.SerialNumber);
 
+            nc.Delete(nc[1]);
             nc.Delete(nc[3]);
 
             Console.WriteLine();
