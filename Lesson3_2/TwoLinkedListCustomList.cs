@@ -11,29 +11,16 @@ namespace Lesson3_2
     {
         public override void Add(T value)
         {
-            Node<T> node = AssignmentNode(value);
-
-            if (Head == null)
-                base.Add(value);
-            else if (Head.NextElement == null)
-            {
-                ((TwoLinkedNode<T>)Tail).PreviousElement = null;
-                Tail.NextElement = node;
-                Tail = (TwoLinkedNode<T>)node;
-                ((TwoLinkedNode<T>)Tail).PreviousElement = (TwoLinkedNode<T>)Head;
-            }
-            else
-            {
-                Tail.NextElement = node;
-                ((TwoLinkedNode<T>)Head).PreviousElement = (TwoLinkedNode<T>)Tail;
-                Tail = (TwoLinkedNode<T>)node;
-                ((TwoLinkedNode<T>)Tail).PreviousElement = ((TwoLinkedNode<T>)Head).PreviousElement;
-                ((TwoLinkedNode<T>)Head).PreviousElement = null;
-            }
+            base.Add(value);
         }
         protected override Node<T> AssignmentNode(T value)
         {
             return new TwoLinkedNode<T>(value, null, null);
+        }
+        protected override void SetTail(Node<T> node)
+        {
+            base.SetTail(node);
+            ((TwoLinkedNode<T>)node).PreviousElement = (TwoLinkedNode<T>)base.Tail;
         }
         public override void Delete(T value)
         {
@@ -61,10 +48,12 @@ namespace Lesson3_2
                     else
                     {
                         Head = (TwoLinkedNode<T>)Head.NextElement;
+                        ((TwoLinkedNode<T>)Head).PreviousElement = (((TwoLinkedNode<T>)Head).PreviousElement).PreviousElement;
                         if (Head == null)
                         {
                             Tail = null;
                         }
+                        return;
                     }
                 }
                 if (last.Element.Equals(value))
@@ -85,10 +74,12 @@ namespace Lesson3_2
                     else
                     {
                         Tail = ((TwoLinkedNode<T>)Tail).PreviousElement;
+                        ((TwoLinkedNode<T>)Tail).NextElement = Tail.NextElement.NextElement;
                         if (Tail == null)
                         {
                             Head = null;
                         }
+                        return;
                     }
                 }
                 previouslast = last;

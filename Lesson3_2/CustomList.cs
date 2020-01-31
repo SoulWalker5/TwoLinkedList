@@ -28,14 +28,19 @@ namespace Lesson3_2
             if (Head == null)
             {
                 Head = node;
-                Tail = node;
             }
             else
             {
-                Tail.NextElement = node;
-                Tail = node;
+                SetTail(node);
             }
+            Tail = node;
         }
+
+        protected virtual void SetTail(Node<T> node)
+        {
+            Tail.NextElement = node;
+        }
+
         protected virtual Node<T> AssignmentNode(T value)
         {
             return new Node<T>(value, null);
